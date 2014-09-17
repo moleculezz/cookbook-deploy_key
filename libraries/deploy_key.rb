@@ -20,6 +20,7 @@ module DeployKey
     URI.parse case self
               when Chef::Provider::DeployKeyBitbucket then "https://bitbucket.org/api/1.0/repositories/#{new_resource.repo}/deploy-keys#{path}"
               when Chef::Provider::DeployKeyGithub    then "https://api.github.com/repos/#{new_resource.repo}/keys#{path}"
+              when Chef::Provider::DeployUserKeyGithub then "https://api.github.com/user/keys#{path}"
               when Chef::Provider::DeployKeyGitlab    then "#{new_resource.api_url}/api/v3/projects/#{new_resource.repo}/keys#{path}"
               end
   end
