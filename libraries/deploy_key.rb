@@ -78,6 +78,21 @@ module DeployKey
     response
   end
 
+  def add_user_key(label, key)
+    body = {
+        case self
+        when Chef::Provider::DeployUserKeyGithub then :title
+        end => "#{label} - #{node.name}",
+        :key => key
+      }.to_json
+    response = request(:post, url, body)
+    unless Net::HTTPOK      === response ||
+           Net::HTTPCreated === response
+      raise "Could not add SSH key #{new_resource.label} to Bitbucket: #{response.code} #{response.body}"
+    end
+    response
+  end
+
   def remove_key(key)
     retrieved_key = get_key(key)
     key_id = case self
