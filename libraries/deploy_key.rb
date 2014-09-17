@@ -20,7 +20,7 @@ module DeployKey
     URI.parse case self
               when Chef::Provider::DeployKeyBitbucket then "https://bitbucket.org/api/1.0/repositories/#{new_resource.repo}/deploy-keys#{path}"
               when Chef::Provider::DeployKeyGithub    then "https://api.github.com/repos/#{new_resource.repo}/keys#{path}"
-              when Chef::Provider::DeployUserKeyGithub then "https://api.github.com/user/keys#{path}"
+              when Chef::Provider::DeployKeyGithubUser then "https://api.github.com/user/keys#{path}"
               when Chef::Provider::DeployKeyGitlab    then "#{new_resource.api_url}/api/v3/projects/#{new_resource.repo}/keys#{path}"
               end
   end
@@ -66,6 +66,7 @@ module DeployKey
         case self
         when Chef::Provider::DeployKeyBitbucket then :label
         when Chef::Provider::DeployKeyGithub    then :title
+        when Chef::Provider::DeployKeyGithubUser then :title
         when Chef::Provider::DeployKeyGitlab    then :title
         end => "#{label} - #{node.name}",
         :key => key
@@ -83,6 +84,7 @@ module DeployKey
     key_id = case self
              when Chef::Provider::DeployKeyBitbucket then retrieved_key["pk"]
              when Chef::Provider::DeployKeyGithub    then retrieved_key["id"]
+             when Chef::Provider::DeployKeyGithubUser then retrieved_key["id"]
              when Chef::Provider::DeployKeyGitlab    then retrieved_key["id"]
              end
     key_url = url("/#{key_id}")
