@@ -34,3 +34,5 @@ attribute :group, :kind_of => String, :default => "root"
 attribute :mode, :default => 00600
 
 attribute :api_url, :kind_of => String, :default => nil
+
+attribute :user_key, :kind_of => [TrueClass, FalseClass], :default => false
